@@ -4,64 +4,328 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        color: #111;
+      }
+
+      .top-nav {
+        height: 72px;
+        background: #f2f2f2;
+        border-bottom: 1px solid #e1e1e1;
+      }
+
+      .top-nav__inner {
+        width: 100%;
+        max-width: 1400px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 42px;
+        font-weight: 900;
+        letter-spacing: -3px;
+        line-height: 1;
+        transform: skewX(-16deg);
+        user-select: none;
+      }
+
+      .menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 42px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #1a1a1a;
+        font-size: 23px;
+        font-weight: 700;
+      }
+
+      .menu a:hover {
+        opacity: 0.7;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .lang-link {
+        color: #111;
+        text-decoration: none;
+      }
+
+      .lang-divider {
+        color: #9a9a9a;
+      }
+
+      .search-btn {
+        width: 22px;
+        height: 22px;
+        border: 0;
+        background: transparent;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .search-btn::before {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        width: 12px;
+        height: 12px;
+        border: 2px solid #111;
+        border-radius: 50%;
+      }
+
+      .search-btn::after {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 2px;
+        background: #111;
+        right: 1px;
+        bottom: 3px;
+        transform: rotate(45deg);
+        transform-origin: right center;
+      }
+
+      .hamburger-btn {
+        display: none;
+        width: 32px;
+        height: 24px;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .hamburger-btn span {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #111;
+        border-radius: 2px;
+      }
+
+      .hamburger-btn span:nth-child(1) {
+        top: 0;
+      }
+
+      .hamburger-btn span:nth-child(2) {
+        top: 10px;
+      }
+
+      .hamburger-btn span:nth-child(3) {
+        top: 20px;
+      }
+
+      .mobile-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(82%, 320px);
+        height: 100vh;
+        background: #ffffff;
+        box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+        z-index: 1200;
+        padding: 18px 20px 28px;
+      }
+
+      .mobile-drawer.is-open {
+        transform: translateX(0);
+      }
+
+      .drawer-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 14px;
+      }
+
+      .drawer-close-btn {
+        border: 0;
+        background: transparent;
+        font-size: 30px;
+        line-height: 1;
+        cursor: pointer;
+        color: #111;
+      }
+
+      .drawer-menu {
+        list-style: none;
+      }
+
+      .drawer-menu li + li {
+        border-top: 1px solid #ededed;
+      }
+
+      .drawer-menu a {
+        display: block;
+        padding: 16px 0;
+        text-decoration: none;
+        color: #111;
+        font-size: 19px;
+        font-weight: 700;
+      }
+
+      .drawer-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+        z-index: 1100;
+      }
+
+      .drawer-overlay.is-open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      body.drawer-open {
+        overflow: hidden;
+      }
+
+      @media (max-width: 768px) {
+        .top-nav {
+          height: 64px;
+        }
+
+        .top-nav__inner {
+          padding: 0 16px;
+        }
+
+        .logo {
+          font-size: 32px;
+        }
+
+        .top-nav nav,
+        .nav-right {
+          display: none;
+        }
+
+        .hamburger-btn {
+          display: block;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .mobile-drawer,
+        .drawer-overlay {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <!-- 로고 -->
-      <div id="logo" style="float: left; padding: 10px">
-        <a
-          href="/"
-          style="
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            font-size: 1.6em;
-          "
+    <header class="top-nav">
+      <div class="top-nav__inner">
+        <h1 class="logo">KIA</h1>
+        <nav aria-label="Main Navigation">
+          <ul class="menu">
+            <li><a href="#">회사소개</a></li>
+            <li><a href="#">제품소개</a></li>
+            <li><a href="#">온라인문의</a></li>
+            <li><a href="#">게시판</a></li>
+          </ul>
+        </nav>
+        <div class="nav-right">
+          <a class="lang-link" href="#">KR</a>
+          <span class="lang-divider">|</span>
+          <a class="lang-link" href="#">EN</a>
+          <button class="search-btn" type="button" aria-label="Search"></button>
+        </div>
+        <button
+          class="hamburger-btn"
+          type="button"
+          aria-label="모바일 메뉴 열기"
         >
-          LOGO
-        </a>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-      <!-- 메뉴 -->
-      <nav style="float: left; margin-left: 30px; padding: 10px">
-        <ul
-          style="
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            gap: 20px;
-          "
+    </header>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <div class="drawer-header">
+        <button
+          class="drawer-close-btn"
+          id="drawerCloseBtn"
+          type="button"
+          aria-label="모바일 메뉴 닫기"
         >
-          <li>
-            <a href="#home" style="text-decoration: none; color: #333">홈</a>
-          </li>
-          <li>
-            <a href="#about" style="text-decoration: none; color: #333">소개</a>
-          </li>
-          <li>
-            <a href="#services" style="text-decoration: none; color: #333"
-              >서비스</a
-            >
-          </li>
-          <li>
-            <a href="#contact" style="text-decoration: none; color: #333"
-              >문의</a
-            >
-          </li>
+          &times;
+        </button>
+      </div>
+      <nav aria-label="Mobile Navigation">
+        <ul class="drawer-menu">
+          <li><a href="#">회사소개</a></li>
+          <li><a href="#">제품소개</a></li>
+          <li><a href="#">온라인문의</a></li>
+          <li><a href="#">게시판</a></li>
         </ul>
       </nav>
-      <!-- 유틸 메뉴 -->
-      <div id="util-menu" style="float: right; padding: 10px">
-        <a
-          href="#login"
-          style="text-decoration: none; color: #666; margin-right: 15px"
-          >로그인</a
-        >
-        <a href="#signup" style="text-decoration: none; color: #666"
-          >회원가입</a
-        >
-      </div>
-      <div style="clear: both"></div>
-    </header>
+    </aside>
+    <main></main>
+    <footer></footer>
+    <script>
+      const hamburgerBtn = document.querySelector(".hamburger-btn");
+      const drawerCloseBtn = document.querySelector("#drawerCloseBtn");
+      const drawerOverlay = document.querySelector("#drawerOverlay");
+      const mobileDrawer = document.querySelector("#mobileDrawer");
+      const drawerMenuLinks = document.querySelectorAll(".drawer-menu a");
+
+      function openDrawer() {
+        drawerOverlay.classList.add("is-open");
+        mobileDrawer.classList.add("is-open");
+        mobileDrawer.setAttribute("aria-hidden", "false");
+        document.body.classList.add("drawer-open");
+      }
+
+      function closeDrawer() {
+        drawerOverlay.classList.remove("is-open");
+        mobileDrawer.classList.remove("is-open");
+        mobileDrawer.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("drawer-open");
+      }
+
+      hamburgerBtn.addEventListener("click", openDrawer);
+      drawerCloseBtn.addEventListener("click", closeDrawer);
+      drawerOverlay.addEventListener("click", closeDrawer);
+
+      drawerMenuLinks.forEach((link) => {
+        link.addEventListener("click", closeDrawer);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeDrawer();
+        }
+      });
+    </script>
   </body>
 </html>
